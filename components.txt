@@ -9,7 +9,7 @@ App
   │ └── Search/Search
   ├─┬ Company/Company
   │ └─┬ CardList/CardList
-  │   └─┬ Card/Card
+  │   └─ Card/Card
   │     ├── CompanyCard/CompanyCard
   │     └── JobCard/JobCard
   ├── Home/Home
