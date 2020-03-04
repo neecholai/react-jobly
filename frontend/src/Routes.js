@@ -12,12 +12,12 @@ const Routes = ({user}) => {
     <div>
       <Switch>
         <Route exact path="/"><HomeScreen loggedIn={user.loggedIn}/></Route>
-        {/* <Route exact path="/login"><LoginForm /></Route> */}
+        <Route exact path="/login"><LoginForm /></Route>
         <Route exact path="/profile"><ProfileForm /></Route>
         <Route exact path="/companies"><CompanyList /></Route>
         <Route exact path="/companies/:name"><JobList /></Route>
         <Route exact path="/jobs"><JobList/></Route>
-        <Redirect to="/s" />
+        <Redirect to="/" />
       </Switch>
     </div>
   );

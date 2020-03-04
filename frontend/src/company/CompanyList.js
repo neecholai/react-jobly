@@ -25,7 +25,7 @@ const CompanyList = () => {
   return (
     <div className="col-md-8 offset-md-2">
       <SearchBar handleSearch={searchCompanies} />
-      <div className="pt-5">
+      <div>
         {companies.map(company => <Company key={company.handle} company={company}/>)}
       </div>
     </div>

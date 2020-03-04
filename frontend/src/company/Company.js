@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from "react-bootstrap/Card";
 
-const CompanyList = ({ company }) => {
+const Company = ({ company }) => {
   return (
     <Card className={"mb-3"}>
       <Card.Body>
@@ -15,4 +15,4 @@ const CompanyList = ({ company }) => {
   );
 }
 
-export default CompanyList;
+export default Company;

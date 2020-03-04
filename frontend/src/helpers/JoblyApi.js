@@ -37,6 +37,12 @@ class JoblyApi {
     let res = await this.request(endpoint);
     return res.companies;
   } 
+
+  static async getJobs(search) {
+    const endpoint = search ? `jobs/?search=${search}` : 'jobs/';
+    let res = await this.request(endpoint);
+    return res.jobs;
+  } 
 }
 
 export default JoblyApi;

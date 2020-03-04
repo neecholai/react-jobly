@@ -14,7 +14,7 @@ const SearchBar = ({ handleSearch }) => {
   }
 
   return (
-    <form className="form-inline" onSubmit={handleSubmit}>
+    <form className="form-inline mb-3" onSubmit={handleSubmit}>
       <input className="form-control-lg flex-grow-1"
         type="search"
         name="search"
