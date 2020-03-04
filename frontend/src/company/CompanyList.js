@@ -6,6 +6,7 @@ import CompanyCard from './CompanyCard';
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
 
+  //opportunity to refactor getCompanies() outside of useEffect & searchCompanies
   useEffect(() => {
     const getCompanies = async () => {
       const companiesResp = await JoblyApi.getCompanies();

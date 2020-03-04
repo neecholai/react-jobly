@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
-const HomeScreen = ({loggedIn}) => {
+const HomeScreen = ({ loggedIn }) => {
   return (
     <div>
       <h2>Jobly</h2>
@@ -8,7 +9,7 @@ const HomeScreen = ({loggedIn}) => {
       {loggedIn ?
         <h3>Welcome Back</h3>
         :
-        <button type="button" class="btn btn-primary">Login</button>
+        <Link to="/login" className="btn btn-primary">Login</Link>
       }
     </div>
   );

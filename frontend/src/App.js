@@ -6,14 +6,25 @@ import NavBar from "./NavBar";
 import './App.css';
 
 const App = () => {
-  const INITIAL_STATE = { _token: "", username: "", loggedIn: true };
+  const INITIAL_STATE = localStorage.getItem('_token') ? 
+    { username: localStorage.getItem('username'), loggedIn: true } :
+    { username: "", loggedIn: false };
   const [user, setUser] = useState(INITIAL_STATE);
+
+  const login = () => {
+    setUser({username: localStorage.getItem('username'), loggedIn: true});
+  }
+
+  const logout = () => {
+    setUser({username: "", loggedIn: false});
+    localStorage.removeItem('_token');
+  }
 
   return (
     <div className="App">
       <BrowserRouter>
-        <NavBar loggedIn={user.loggedIn} />
-        <Routes user={user}/>
+        <NavBar loggedIn={user.loggedIn} logout={logout} />
+        <Routes user={user} login={login}/>
       </BrowserRouter>
     </div>
   );

@@ -8,12 +8,12 @@ import JobList from "./job/JobList";
 import Company from "./company/Company";
 import './App.css';
 
-const Routes = ({user}) => {
+const Routes = ({user, login}) => {
   return (
     <div>
       <Switch>
         <Route exact path="/"><HomeScreen loggedIn={user.loggedIn}/></Route>
-        <Route exact path="/login"><LoginForm /></Route>
+        <Route exact path="/login"><LoginForm login={login} loggedIn={user.loggedIn}/></Route>
         <Route exact path="/profile"><ProfileForm /></Route>
         <Route exact path="/companies"><CompanyList /></Route>
         <Route exact path="/companies/:handle"><Company /></Route>

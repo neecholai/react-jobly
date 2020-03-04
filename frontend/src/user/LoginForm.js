@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { useHistory } from 'react-router-dom';
+import JoblyApi from "../helpers/JoblyApi";
 
-const LoginForm = ({ loggedIn }) => {
+const LoginForm = ({ login, loggedIn }) => {
+  
+  const history = useHistory();
+  if (loggedIn) history.push('/');
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -21,9 +27,17 @@ const LoginForm = ({ loggedIn }) => {
   }
 
   const handleSubmit = evt => {
-    evt.preventDefault();
-    console.log({ formData });
-    // handle(search);
+    evt.preventDefault();;
+    const endpoint = exUser ? "login" : "users";
+    loginOrRegister(endpoint);
+    login();
+  }
+
+  const loginOrRegister = endpoint => {
+    const getToken = async endpoint => {
+      await JoblyApi.getToken(formData, endpoint);
+    }
+    getToken(endpoint);
   }
 
   return (
@@ -58,7 +72,7 @@ const LoginForm = ({ loggedIn }) => {
             </div>
         }
         <Button variant="primary" type="submit">
-          Submit 
+          Submit
   </Button>
       </Form>
     </div>

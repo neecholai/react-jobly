@@ -1,3 +1,10 @@
+.CompanyCard {
+  text-decoration: none;
+  color: black;
+}
+
 .CompanyCard :hover {
   cursor: pointer;
+  text-decoration: none;
+  color: black;
 }
