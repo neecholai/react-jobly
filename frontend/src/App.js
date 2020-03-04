@@ -6,7 +6,7 @@ import NavBar from "./NavBar";
 import './App.css';
 
 const App = () => {
-  const INITIAL_STATE = { _token: "", username: "", loggedIn: false };
+  const INITIAL_STATE = { _token: "", username: "", loggedIn: true };
   const [user, setUser] = useState(INITIAL_STATE);
 
   return (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../helpers/SearchBar';
 import JoblyApi from '../helpers/JoblyApi';
-import Company from './Company';
+import CompanyCard from './CompanyCard';
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -26,7 +26,7 @@ const CompanyList = () => {
     <div className="col-md-8 offset-md-2">
       <SearchBar handleSearch={searchCompanies} />
       <div>
-        {companies.map(company => <Company key={company.handle} company={company}/>)}
+        {companies.map(company => <CompanyCard key={company.handle} company={company}/>)}
       </div>
     </div>
   );

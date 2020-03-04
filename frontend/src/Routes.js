@@ -5,6 +5,7 @@ import LoginForm from "./user/LoginForm";
 import ProfileForm from "./user/ProfileForm";
 import CompanyList from "./company/CompanyList";
 import JobList from "./job/JobList";
+import Company from "./company/Company";
 import './App.css';
 
 const Routes = ({user}) => {
@@ -15,8 +16,8 @@ const Routes = ({user}) => {
         <Route exact path="/login"><LoginForm /></Route>
         <Route exact path="/profile"><ProfileForm /></Route>
         <Route exact path="/companies"><CompanyList /></Route>
-        <Route exact path="/companies/:name"><JobList /></Route>
-        <Route exact path="/jobs"><JobList/></Route>
+        <Route exact path="/companies/:handle"><Company /></Route>
+        <Route exact path="/jobs"><JobList /></Route>
         <Redirect to="/" />
       </Switch>
     </div>
