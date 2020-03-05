@@ -9,7 +9,7 @@ import UserContext from './user/UserContext';
 const App = () => {
   const INITIAL_STATE = localStorage.getItem('_token') ?
   { username: localStorage.getItem('username'), loggedIn: true } :
-  { username: "", loggedIn: false };
+  { username: "", loggedIn: false, job: []};
   const [user, setUser] = useState(INITIAL_STATE);
 
   const login = () => {

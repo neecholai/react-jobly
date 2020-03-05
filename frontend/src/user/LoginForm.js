@@ -21,7 +21,7 @@ const LoginForm = () => {
     lastName: "",
     email: ""
   });
-  const [exUser, setExUser] = useState(true);
+  const [existingUser, setExistingUser] = useState(true);
   const [errMsg, setErrMsg] = useState(false);
 
   const handleChange = evt => {
@@ -34,7 +34,7 @@ const LoginForm = () => {
 
   const handleSubmit = async evt => {
     evt.preventDefault();
-    const endpoint = exUser ? "login" : "users";
+    const endpoint = existingUser ? "login" : "users";
     const resp = await JoblyApi.getToken(formData, endpoint);
     resp.error ? setErrMsg(resp.error) : login();
   }
@@ -43,8 +43,8 @@ const LoginForm = () => {
     <div className='col-md-8 offset-md-2'>
       <div className='d-flex justify-content-end'>
         <ButtonGroup>
-          <Button className='LoginForm-loginBtn' active={exUser} onClick={() => setExUser(true)} variant='primary'>Login</Button>
-          <Button className='LoginForm-registerBtn' active={!exUser} onClick={() => setExUser(false)} variant='primary'>Sign up</Button>
+          <Button className='LoginForm-loginBtn' active={existingUser} onClick={() => setExistingUser(true)} variant='primary'>Login</Button>
+          <Button className='LoginForm-registerBtn' active={!existingUser} onClick={() => setExistingUser(false)} variant='primary'>Sign up</Button>
         </ButtonGroup>
       </div>
 
@@ -59,7 +59,7 @@ const LoginForm = () => {
           <Form.Control type="password" onChange={handleChange} value={formData.password} name="password" />
         </Form.Group>
         {
-          exUser ? null :
+          existingUser ? null :
             <div>
               <Form.Group>
                 <Form.Label className='LoginForm-label'>First Name</Form.Label>

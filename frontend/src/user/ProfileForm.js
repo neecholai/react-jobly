@@ -24,12 +24,15 @@ const ProfileForm = () => {
   useEffect(() => {
     const getUser = async () => {
       const userResp = await JoblyApi.getUser(user.username);
-      if (userResp.photo_url === defaultUserImg) userResp.photo_url = "";
+      let {first_name, last_name, email, photo_url} = userResp;
+      
+      if (photo_url === defaultUserImg) photo_url = "";
+
       setFormData({
-        firstName: userResp.first_name || "",
-        lastName: userResp.last_name || "",
-        email: userResp.email || "",
-        photoURL: userResp.photo_url || "",
+        firstName: first_name,
+        lastName: last_name,
+        email,
+        photoURL: photo_url,
         password: ""
       })
     }
@@ -49,6 +52,7 @@ const ProfileForm = () => {
     const resp = await JoblyApi.patchUser(user.username, formData);
 
     if (resp.error) {
+      setSuccessMsg(false);
       setErrMsg(resp.error);
     } else {
       setFormData(oldFormData => ({

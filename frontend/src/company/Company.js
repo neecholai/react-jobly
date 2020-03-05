@@ -15,6 +15,7 @@ const Company = () => {
     getCompany();
   }, [handle]);
 
+  
 
   return (
     <div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2">

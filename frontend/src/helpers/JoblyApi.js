@@ -23,19 +23,16 @@ class JoblyApi {
       let message = err.response.data.message;
       // throw Array.isArray(message) ? message : [message];
       // return false;
-      return {error: Array.isArray(message) ? message : [message]};
+      return { error: Array.isArray(message) ? message : [message] };
     }
   }
 
   static async getToken(formData, endpoint) {
-    const { firstName, lastName } = formData;
-    [formData.first_name, formData.last_name] = [firstName, lastName];
-    delete formData.firstName;
-    delete formData.lastName;
-    formData.photo_url = defaultUserImg;
-    let res = await this.request(endpoint, formData, 'post');
+    const data = formatData(formData);
+
+    let res = await this.request(endpoint, data, 'post');
     localStorage.setItem("_token", res.token);
-    localStorage.setItem("username", formData.username);
+    localStorage.setItem("username", data.username);
     return res;
   }
 
@@ -62,16 +59,35 @@ class JoblyApi {
   }
 
   static async patchUser(username, formData) {
-    const data = {...formData};
-    const { firstName, lastName, photoURL } = data;
-    [data.first_name, data.last_name, data.photo_url] = [firstName, lastName, photoURL];
-    if(data.photo_url === "") data.photo_url = defaultUserImg;
-
-    ['firstName', 'lastName', 'photoURL'].forEach(item => delete data[item]);
-
+    const data = formatData(formData);
     let res = await this.request(`users/${username}`, data, 'patch');
+
     return res;
   }
+
+  static async apply(jobId, username) {
+    let res = await this.request(
+      `jobs/${jobId}/apply`,
+      { state: "applied", username },
+      "post"
+      );
+    return res;
+  }
+}
+
+
+const formatData = formData => {
+  let { firstName, lastName, photoURL, ...prevData } = formData;
+  if (!photoURL || photoURL === "") photoURL = defaultUserImg;
+
+  const data = { 
+    ...prevData, 
+    first_name: firstName, 
+    last_name: lastName,
+    photo_url: photoURL
+    };
+
+  return data;
 }
 
 export default JoblyApi;
