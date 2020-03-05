@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Alert from 'react-bootstrap/Alert';
 import { useHistory } from 'react-router-dom';
 import JoblyApi from "../helpers/JoblyApi";
+import UserContext from './UserContext';
 
-const LoginForm = ({ login, loggedIn }) => {
-  
+const LoginForm = () => {
+  const { user, login } = useContext(UserContext);
+
   const history = useHistory();
-  if (loggedIn) history.push('/');
+  if (user.loggedIn) history.push('/');
 
   const [formData, setFormData] = useState({
     username: "",
@@ -17,6 +21,7 @@ const LoginForm = ({ login, loggedIn }) => {
     email: ""
   });
   const [exUser, setExUser] = useState(true);
+  const [loginErr, setLoginErr] = useState(false);
 
   const handleChange = evt => {
     const { name, value } = evt.target;
@@ -27,53 +32,66 @@ const LoginForm = ({ login, loggedIn }) => {
   }
 
   const handleSubmit = evt => {
-    evt.preventDefault();;
+    evt.preventDefault();
     const endpoint = exUser ? "login" : "users";
     loginOrRegister(endpoint);
-    login();
+    if (!loginErr) login();
   }
 
   const loginOrRegister = endpoint => {
     const getToken = async endpoint => {
-      await JoblyApi.getToken(formData, endpoint);
+      const resp = await JoblyApi.getToken(formData, endpoint);
+      if(!resp) setLoginErr(true);
     }
     getToken(endpoint);
   }
 
   return (
     <div className='col-md-8 offset-md-2'>
-      <Button onClick={() => setExUser(true)} variant='primary'>Login</Button>
-      <Button onClick={() => setExUser(false)} variant='primary'>Sign up</Button>
-      <Form onSubmit={handleSubmit}>
+      <div className='d-flex justify-content-end'>
+        <ButtonGroup>
+          <Button className='LoginForm-loginBtn' active={exUser} onClick={() => setExUser(true)} variant='primary'>Login</Button>
+          <Button className='LoginForm-registerBtn' active={!exUser} onClick={() => setExUser(false)} variant='primary'>Sign up</Button>
+        </ButtonGroup>
+      </div>
 
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Username</Form.Label>
+      <Form className='border p-4' onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label className='d-flex justify-content-start'>Username</Form.Label>
           <Form.Control onChange={handleChange} value={formData.username} name="username" />
         </Form.Group>
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
+
+        <Form.Group>
+          <Form.Label className='d-flex justify-content-start'>Password</Form.Label>
           <Form.Control type="password" onChange={handleChange} value={formData.password} name="password" />
         </Form.Group>
         {
           exUser ? null :
             <div>
-              <Form.Group controlId="formBasicEmail">
+              <Form.Group>
                 <Form.Label>First Name</Form.Label>
                 <Form.Control onChange={handleChange} value={formData.firstName} name="firstName" />
               </Form.Group>
-              <Form.Group controlId="formBasicEmail">
+
+              <Form.Group>
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control onChange={handleChange} value={formData.lastName} name="lastName" />
               </Form.Group>
-              <Form.Group controlId="formBasicEmail">
+
+              <Form.Group>
                 <Form.Label>Email</Form.Label>
                 <Form.Control onChange={handleChange} value={formData.email} name="email" />
               </Form.Group>
             </div>
         }
-        <Button variant="primary" type="submit">
-          Submit
-  </Button>
+        {
+          loginErr ?
+            <Alert variant="danger">Invalid username/password</Alert> :
+            null
+        }
+        <div className='d-flex justify-content-end'>
+          <Button variant="primary" type="submit">Submit</Button>
+        </div>
       </Form>
     </div>
   );

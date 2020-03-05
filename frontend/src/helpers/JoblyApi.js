@@ -19,8 +19,9 @@ class JoblyApi {
 
     catch (err) {
       console.error("API Error:", err.response);
-      let message = err.response.data.message;
-      throw Array.isArray(message) ? message : [message];
+      // let message = err.response.data.message;
+      // throw Array.isArray(message) ? message : [message];
+      return false;
     }
   }
 
@@ -29,11 +30,10 @@ class JoblyApi {
     [formData.first_name, formData.last_name] = [firstName, lastName];
     delete formData.firstName;
     delete formData.lastName;
-    console.log({formData, endpoint});
     let res = await this.request(endpoint, formData, 'post');
-    console.log(res);
     localStorage.setItem("_token", res.token);
     localStorage.setItem("username", formData.username);
+    // return res.token;
   }
 
   static async getCompany(handle) {
@@ -51,6 +51,21 @@ class JoblyApi {
     const endpoint = search ? `jobs/?search=${search}` : 'jobs/';
     let res = await this.request(endpoint);
     return res.jobs;
+  }
+
+  static async getUser(username) {
+    let res = await this.request(`users/${username}`);
+    return res.user;
+  }
+
+  static async patchUser(username, formData) {
+    const data = {...formData};
+    const { firstName, lastName, photoURL } = data;
+    [data.first_name, data.last_name, data.photo_url] = [firstName, lastName, photoURL];
+    ['firstName', 'lastName', 'photoURL'].forEach(item => delete data[item]);
+
+    let res = await this.request(`users/${username}`, data, 'patch');
+    return res.user;
   }
 }
 
