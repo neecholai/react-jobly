@@ -1,0 +1,5 @@
+.LoginForm-label {
+  display: flex;
+  justify-content: start;
+  font-weight: bold;
+}

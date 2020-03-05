@@ -6,6 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 import { useHistory } from 'react-router-dom';
 import JoblyApi from "../helpers/JoblyApi";
 import UserContext from './UserContext';
+import './LoginForm.css';
 
 const LoginForm = () => {
   const { user, login } = useContext(UserContext);
@@ -21,7 +22,7 @@ const LoginForm = () => {
     email: ""
   });
   const [exUser, setExUser] = useState(true);
-  const [loginErr, setLoginErr] = useState(false);
+  const [errMsg, setErrMsg] = useState(false);
 
   const handleChange = evt => {
     const { name, value } = evt.target;
@@ -31,19 +32,11 @@ const LoginForm = () => {
     });
   }
 
-  const handleSubmit = evt => {
+  const handleSubmit = async evt => {
     evt.preventDefault();
     const endpoint = exUser ? "login" : "users";
-    loginOrRegister(endpoint);
-    if (!loginErr) login();
-  }
-
-  const loginOrRegister = endpoint => {
-    const getToken = async endpoint => {
-      const resp = await JoblyApi.getToken(formData, endpoint);
-      if(!resp) setLoginErr(true);
-    }
-    getToken(endpoint);
+    const resp = await JoblyApi.getToken(formData, endpoint);
+    resp.error ? setErrMsg(resp.error) : login();
   }
 
   return (
@@ -57,36 +50,36 @@ const LoginForm = () => {
 
       <Form className='border p-4' onSubmit={handleSubmit}>
         <Form.Group>
-          <Form.Label className='d-flex justify-content-start'>Username</Form.Label>
+          <Form.Label className='LoginForm-label'>Username</Form.Label>
           <Form.Control onChange={handleChange} value={formData.username} name="username" />
         </Form.Group>
 
         <Form.Group>
-          <Form.Label className='d-flex justify-content-start'>Password</Form.Label>
+          <Form.Label className='LoginForm-label'>Password</Form.Label>
           <Form.Control type="password" onChange={handleChange} value={formData.password} name="password" />
         </Form.Group>
         {
           exUser ? null :
             <div>
               <Form.Group>
-                <Form.Label>First Name</Form.Label>
+                <Form.Label className='LoginForm-label'>First Name</Form.Label>
                 <Form.Control onChange={handleChange} value={formData.firstName} name="firstName" />
               </Form.Group>
 
               <Form.Group>
-                <Form.Label>Last Name</Form.Label>
+                <Form.Label className='LoginForm-label'>Last Name</Form.Label>
                 <Form.Control onChange={handleChange} value={formData.lastName} name="lastName" />
               </Form.Group>
 
               <Form.Group>
-                <Form.Label>Email</Form.Label>
+                <Form.Label className='LoginForm-label'>Email</Form.Label>
                 <Form.Control onChange={handleChange} value={formData.email} name="email" />
               </Form.Group>
             </div>
         }
         {
-          loginErr ?
-            <Alert variant="danger">Invalid username/password</Alert> :
+          errMsg ?
+            errMsg.map(msg => <Alert variant="danger">{msg}</Alert>) :
             null
         }
         <div className='d-flex justify-content-end'>

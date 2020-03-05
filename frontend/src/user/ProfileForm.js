@@ -1,9 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import JoblyApi from "../helpers/JoblyApi";
 import UserContext from './UserContext';
 import './ProfileForm.css'
+import defaultUserImg from "../assets/default-user-img.png";
 
 const ProfileForm = () => {
 
@@ -16,10 +18,13 @@ const ProfileForm = () => {
     photoURL: "",
     password: ""
   });
+  const [errMsg, setErrMsg] = useState(false);
+  const [successMsg, setSuccessMsg] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
       const userResp = await JoblyApi.getUser(user.username);
+      if (userResp.photo_url === defaultUserImg) userResp.photo_url = "";
       setFormData({
         firstName: userResp.first_name || "",
         lastName: userResp.last_name || "",
@@ -39,20 +44,20 @@ const ProfileForm = () => {
     });
   }
 
-  const handleSubmit = evt => {
+  const handleSubmit = async evt => {
     evt.preventDefault();
-    updateUser(user.username, formData);
-  }
+    const resp = await JoblyApi.patchUser(user.username, formData);
 
-  const updateUser = (username, formData) => {
-    const patchUser = async (username, formData) => {
-      await JoblyApi.patchUser(username, formData);
+    if (resp.error) {
+      setErrMsg(resp.error);
+    } else {
+      setFormData(oldFormData => ({
+        ...oldFormData,
+        password: ''
+      }));
+      setErrMsg(false);
+      setSuccessMsg(true);
     }
-    patchUser(username, formData);
-    setFormData(oldFormData => ({
-      ...oldFormData,
-      password: ''
-    }))
   }
 
   return (
@@ -86,7 +91,16 @@ const ProfileForm = () => {
           <Form.Label className='ProfileForm-label'>Re-enter Password</Form.Label>
           <Form.Control type="password" onChange={handleChange} value={formData.password} name="password" />
         </Form.Group>
-
+        {
+          errMsg ?
+            errMsg.map(msg => <Alert variant="danger">{msg}</Alert>) :
+            null
+        }
+        {
+          successMsg ?
+            <Alert variant="success">Successfully updated!</Alert> :
+            null
+        }
         <Button variant="primary" type="submit">
           Save Changes
         </Button>

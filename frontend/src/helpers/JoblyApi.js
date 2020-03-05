@@ -1,4 +1,5 @@
 import axios from 'axios';
+import defaultUserImg from "../assets/default-user-img.png";
 
 class JoblyApi {
   static async request(endpoint, paramsOrData = {}, verb = "get") {
@@ -19,9 +20,10 @@ class JoblyApi {
 
     catch (err) {
       console.error("API Error:", err.response);
-      // let message = err.response.data.message;
+      let message = err.response.data.message;
       // throw Array.isArray(message) ? message : [message];
-      return false;
+      // return false;
+      return {error: Array.isArray(message) ? message : [message]};
     }
   }
 
@@ -30,10 +32,11 @@ class JoblyApi {
     [formData.first_name, formData.last_name] = [firstName, lastName];
     delete formData.firstName;
     delete formData.lastName;
+    formData.photo_url = defaultUserImg;
     let res = await this.request(endpoint, formData, 'post');
     localStorage.setItem("_token", res.token);
     localStorage.setItem("username", formData.username);
-    // return res.token;
+    return res;
   }
 
   static async getCompany(handle) {
@@ -62,10 +65,12 @@ class JoblyApi {
     const data = {...formData};
     const { firstName, lastName, photoURL } = data;
     [data.first_name, data.last_name, data.photo_url] = [firstName, lastName, photoURL];
+    if(data.photo_url === "") data.photo_url = defaultUserImg;
+
     ['firstName', 'lastName', 'photoURL'].forEach(item => delete data[item]);
 
     let res = await this.request(`users/${username}`, data, 'patch');
-    return res.user;
+    return res;
   }
 }
 
