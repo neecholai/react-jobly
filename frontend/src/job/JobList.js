@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../helpers/SearchBar';
 import JoblyApi from '../helpers/JoblyApi';
-import Job from './Job';
+import JobCard from './JobCard';
+import {Container, Row, Col} from 'react-bootstrap';
 
 const JobList = () => {
 
   const [jobs, setJobs] = useState([]);
 
   //opportunity to refactor getCompanies() outside of useEffect & searchCompanies
-  useEffect( () => {
+  useEffect(() => {
     const getJobs = async () => {
       const jobsResp = await JoblyApi.getJobs();
       setJobs(jobsResp)
@@ -25,14 +26,16 @@ const JobList = () => {
   }
 
   return (
-    <div className="col-md-8 offset-md-2">
-      <SearchBar handleSearch={searchJobs} />
-      <div>
-        {
-          jobs.map(job => <Job key={job.id} job={job} />)
-        }
-      </div>
-    </div>
+    <Container>
+      <Row>
+        <Col md={{ span: 8, offset: 2 }}>
+          <SearchBar handleSearch={searchJobs} />
+          {
+            jobs.map(job => <JobCard key={job.id} job={job} />)
+          }
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

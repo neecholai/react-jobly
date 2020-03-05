@@ -2,30 +2,31 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
 import Routes from "./Routes";
-import NavBar from "./NavBar";
+import NavigationBar from "./NavigationBar";
 import './App.css';
 import UserContext from './user/UserContext';
 
 const App = () => {
   const INITIAL_STATE = localStorage.getItem('_token') ?
-  { username: localStorage.getItem('username'), loggedIn: true } :
-  { username: "", loggedIn: false, job: []};
+    { username: localStorage.getItem('username'), loggedIn: true } :
+    { username: "", loggedIn: false };
   const [user, setUser] = useState(INITIAL_STATE);
+  console.log(user);
 
   const login = () => {
     setUser({ username: localStorage.getItem('username'), loggedIn: true });
   }
-  
+
   const logout = () => {
     setUser({ username: "", loggedIn: false });
     localStorage.removeItem('_token');
   }
-  
+
   return (
-    <div className="App" >
+    <div className="App bg-light" >
       <UserContext.Provider value={{ user, login, logout }}>
         <BrowserRouter>
-          <NavBar />
+          <NavigationBar />
           <Routes />
         </BrowserRouter>
       </UserContext.Provider>

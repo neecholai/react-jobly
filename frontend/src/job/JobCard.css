@@ -1,0 +1,8 @@
+.JobCard {
+  text-align: left;
+}
+
+.JobCard-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}

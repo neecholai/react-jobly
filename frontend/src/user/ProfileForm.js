@@ -1,11 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert';
+import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import JoblyApi from "../helpers/JoblyApi";
 import UserContext from './UserContext';
 import './ProfileForm.css'
 import defaultUserImg from "../assets/default-user-img.png";
+import { createErrorMsg } from '../helpers/ApiHelpers';
 
 const ProfileForm = () => {
 
@@ -24,8 +23,8 @@ const ProfileForm = () => {
   useEffect(() => {
     const getUser = async () => {
       const userResp = await JoblyApi.getUser(user.username);
-      let {first_name, last_name, email, photo_url} = userResp;
-      
+      let { first_name, last_name, email, photo_url } = userResp;
+
       if (photo_url === defaultUserImg) photo_url = "";
 
       setFormData({
@@ -55,61 +54,67 @@ const ProfileForm = () => {
       setSuccessMsg(false);
       setErrMsg(resp.error);
     } else {
-      setFormData(oldFormData => ({
-        ...oldFormData,
-        password: ''
-      }));
       setErrMsg(false);
       setSuccessMsg(true);
     }
+    
+    setFormData(oldFormData => ({
+      ...oldFormData,
+      password: ''
+    }));
   }
 
   return (
-    <div className='col-md-6 offset-md-3'>
-      <Form className='border p-4' onSubmit={handleSubmit}>
+    <Container >
+      <Row>
+        <Col md={{ span: 8, offset: 2 }} >
+          <h2>Edit Profile</h2>
+          <Form className='ProfileForm' onSubmit={handleSubmit}>
 
-        <div className='ProfileForm-label pb-2'>Username</div>
-        <p className='d-flex justify-content-start'>{user.username}</p>
+            <div className='ProfileForm-label pb-2'>Username</div>
+            <p className='d-flex justify-content-start'>{user.username}</p>
 
-        <Form.Group>
-          <Form.Label className='ProfileForm-label'>First Name</Form.Label>
-          <Form.Control onChange={handleChange} value={formData.firstName} name="firstName" />
-        </Form.Group>
+            <Form.Group>
+              <Form.Label className='ProfileForm-label'>First Name</Form.Label>
+              <Form.Control onChange={handleChange} value={formData.firstName} name="firstName" />
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label className='ProfileForm-label'>Last Name</Form.Label>
-          <Form.Control onChange={handleChange} value={formData.lastName} name="lastName" />
-        </Form.Group>
+            <Form.Group>
+              <Form.Label className='ProfileForm-label'>Last Name</Form.Label>
+              <Form.Control onChange={handleChange} value={formData.lastName} name="lastName" />
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label className='ProfileForm-label'>Email</Form.Label>
-          <Form.Control onChange={handleChange} value={formData.email} name="email" />
-        </Form.Group>
+            <Form.Group>
+              <Form.Label className='ProfileForm-label'>Email</Form.Label>
+              <Form.Control onChange={handleChange} value={formData.email} name="email" />
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label className='ProfileForm-label'>Photo URL</Form.Label>
-          <Form.Control onChange={handleChange} value={formData.photoURL} name="photoURL" />
-        </Form.Group>
+            <Form.Group>
+              <Form.Label className='ProfileForm-label'>Photo URL</Form.Label>
+              <Form.Control onChange={handleChange} value={formData.photoURL} name="photoURL" />
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label className='ProfileForm-label'>Re-enter Password</Form.Label>
-          <Form.Control type="password" onChange={handleChange} value={formData.password} name="password" />
-        </Form.Group>
-        {
-          errMsg ?
-            errMsg.map(msg => <Alert variant="danger">{msg}</Alert>) :
-            null
-        }
-        {
-          successMsg ?
-            <Alert variant="success">Successfully updated!</Alert> :
-            null
-        }
-        <Button variant="primary" type="submit">
-          Save Changes
+            <Form.Group>
+              <Form.Label className='ProfileForm-label'>Re-enter Password</Form.Label>
+              <Form.Control type="password" onChange={handleChange} value={formData.password} name="password" />
+            </Form.Group>
+            {
+              errMsg ?
+                errMsg.map(msg => <Alert variant="danger">{createErrorMsg(msg)}</Alert>) :
+                null
+            }
+            {
+              successMsg ?
+                <Alert variant="success">Successfully updated!</Alert> :
+                null
+            }
+            <Button variant="primary" type="submit">
+              Save Changes
         </Button>
-      </Form>
-    </div>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import Job from "../job/Job";
+import JobCard from "../job/JobCard";
 import JoblyApi from "../helpers/JoblyApi";
+import { Container, Row, Col} from 'react-bootstrap';
+
 
 const Company = () => {
   const { handle } = useParams();
-  const [company, setCompany] = useState({jobs: [], name: "", description: ""});
+  const [company, setCompany] = useState({ jobs: [], name: "", description: "" });
 
   useEffect(() => {
     const getCompany = async () => {
@@ -15,18 +17,20 @@ const Company = () => {
     getCompany();
   }, [handle]);
 
-  
+
 
   return (
-    <div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
-      <h2>{company.name}</h2>
-      <h5>{company.description}</h5>
-      <div>
-        {
-            company.jobs.map(job => <Job key={job.id} job={job} />) 
-        }
-      </div>
-    </div>
+    <Container>
+      <Row>
+        <Col md={{ span: 8, offset: 2 }}>
+          <h3>{company.name}</h3>
+          <p className='pb-2'>{company.description}</p>
+            {
+              company.jobs.map(job => <JobCard key={job.id} job={job} />)
+            }
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

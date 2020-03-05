@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SearchBar from '../helpers/SearchBar';
 import JoblyApi from '../helpers/JoblyApi';
 import CompanyCard from './CompanyCard';
+import { Container, Row, Col } from 'react-bootstrap';
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -24,12 +25,14 @@ const CompanyList = () => {
   }
 
   return (
-    <div className="col-md-8 offset-md-2">
-      <SearchBar handleSearch={searchCompanies} />
-      <div>
-        {companies.map(company => <CompanyCard key={company.handle} company={company}/>)}
-      </div>
-    </div>
+    <Container>
+      <Row>
+        <Col sm={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }}>
+          <SearchBar handleSearch={searchCompanies} />
+            {companies.map(company => <CompanyCard key={company.handle} company={company} />)}
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

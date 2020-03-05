@@ -3,3 +3,16 @@
   justify-content: start;
   font-weight: bold;
 }
+
+.LoginForm-btn {
+  display: flex;
+  justify-content: flex-end;
+  color: red;
+}
+
+.LoginForm {
+  border: lightgray 1px solid;
+  border-radius: 4px;
+  padding: 40px;
+  background-color: white;
+}

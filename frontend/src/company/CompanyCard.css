@@ -1,10 +1,18 @@
 .CompanyCard {
-  text-decoration: none;
   color: black;
+  text-align: left;
 }
 
 .CompanyCard :hover {
   cursor: pointer;
-  text-decoration: none;
   color: black;
+}
+
+.CompanyCard-image-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.CompanyCard-image {
+  width: 60px;
 }
