@@ -24,6 +24,10 @@ const LoginForm = () => {
   const [existingUser, setExistingUser] = useState(true);
   const [errMsg, setErrMsg] = useState(false);
 
+  useEffect(() => {
+    setErrMsg(false);
+  }, [existingUser])
+
   const handleChange = evt => {
     const { name, value } = evt.target;
     setFormData({
