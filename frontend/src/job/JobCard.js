@@ -9,14 +9,8 @@ const JobCard = ({ job }) => {
   const username = localStorage.getItem('username');
 
   useEffect(() => {
-    const getJobs = async () => {
-      const user = await JoblyApi.getUser(username);
-      const jobs = user.jobs;
-      const userHasApplied = jobs.some(userJob => userJob.id === job.id);
-      setHasApplied(userHasApplied);
-    }
-    getJobs();
-  }, [username, job])
+    if (job.state === 'applied') setHasApplied(true);
+  }, [job])
 
 
   const handleApply = async evt => {
@@ -37,7 +31,7 @@ const JobCard = ({ job }) => {
           <Row>
             <Col xs={8} md={10}>
               <div >Salary: {`$${addCommas(job.salary)}`}</div>
-              <div >Equity: {`${job.equity * 100}%`}</div>
+              <div >Equity: {`${(job.equity * 100).toFixed(1)}%`}</div>
             </Col>
             <Col className='JobCard-btn-container' xs={4} md={2}>
               {

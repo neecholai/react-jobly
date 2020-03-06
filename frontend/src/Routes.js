@@ -1,33 +1,25 @@
-import React, { useContext } from 'react';
-import { Switch, Route, Redirect } from "react-router-dom";
+import React from 'react';
+import { Switch, Route} from "react-router-dom";
+import PrivateRoute from './PrivateRoute';
 import HomeScreen from "./HomeScreen";
 import LoginForm from "./user/LoginForm";
 import ProfileForm from "./user/ProfileForm";
 import CompanyList from "./company/CompanyList";
 import JobList from "./job/JobList";
 import Company from "./company/Company";
-import UserContext from './user/UserContext';
 import NotFound from './NotFound';
-import './App.css';
 
 const Routes = () => {
-  const { user } = useContext(UserContext);
-
   return (
     <div>
       <Switch>
-        <Route exact path="/"><HomeScreen /></Route>
-        <Route exact path="/login"><LoginForm /></Route>
-        {
-          user.loggedIn ?
-              [<Route exact path="/profile"><ProfileForm /></Route>,
-              <Route exact path="/companies"><CompanyList /></Route>,
-              <Route exact path="/companies/:handle"><Company /></Route>,
-              <Route exact path="/jobs"><JobList /></Route>]
-            :
-            <Redirect to="/" />
-        }
-        <Route><NotFound /></Route>
+        <Route exact path="/" component={HomeScreen} />
+        <Route exact path="/login" component={LoginForm} />
+        <PrivateRoute exact path="/profile" component={ProfileForm} />
+        <PrivateRoute exact path="/companies" component={CompanyList} />
+        <PrivateRoute exact path="/companies/:handle" component={Company} />
+        <PrivateRoute exact path="/jobs" component={JobList} />
+        <Route component={NotFound} />
       </Switch>
     </div>
   );
