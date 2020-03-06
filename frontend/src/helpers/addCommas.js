@@ -26,4 +26,4 @@ function addCommas(num) {
   return fraction ? formattedIntegerString  + `.${fraction}` : formattedIntegerString;
 }
 
-module.exports = addCommas;
+export default addCommas;
