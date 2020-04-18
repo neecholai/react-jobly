@@ -30,8 +30,7 @@ In order to make requests to the backend, user must be registered and logged in 
 3. `createdb jobly`
 4. `createdb jobly-test`
 5. `psql jobly < data.sql`
-6. `psql jobly-test < data.sql`
-7. `npm start` to start the server
+6. `npm start` to start the server
 
 ### Deployed 
 
