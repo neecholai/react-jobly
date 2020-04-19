@@ -34,7 +34,7 @@ In order to make requests to the backend, user must be registered and logged in 
 
 - Create file called `.env` and put the following in it:
 `NODE_ENV=development`
-`REACT_APP_BASE_URL='http://localhost:3001'`
+`REACT_APP_BASE_URL='http://localhost:3001/'`
 
 ### Deployed 
 
