@@ -39,7 +39,7 @@ https://jobly-neecholai.herokuapp.com
 
 To deploy to prod, make sure you have access to the heroku account and from the root of the repository run 
 
-`git subtree push --prefix backend heroku master`
+`git subtree push --prefix backend heroku-backend master`
 
 ## Getting Started with the frontend
 
@@ -50,3 +50,7 @@ To deploy to prod, make sure you have access to the heroku account and from the 
 ### Deployed
 
 Frontend and user website is deployed to https://jobly-nicholai.herokuapp.com/ 
+
+To deploy to prod, make sure you have access to the heroku account and from the root of the repository run 
+
+`git subtree push --prefix frontend heroku-frontend master`

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { formatData } from './ApiHelpers';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'https//jobly-neecholai.herokuapp.com';
 
 class JoblyApi {
   static async request(endpoint, paramsOrData = {}, verb = "get") {
